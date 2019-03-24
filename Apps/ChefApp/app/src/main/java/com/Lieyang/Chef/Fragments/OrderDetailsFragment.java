@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.Lieyang.Chef.Adapters.OrderMenuItemsAdapter;
+import com.Lieyang.Chef.Adapters.OrderOrderItemsAdapter;
 import com.Lieyang.Chef.Models.Order;
 import com.Lieyang.Chef.MainActivity;
 import com.Lieyang.Chef.R;
@@ -22,7 +22,7 @@ public class OrderDetailsFragment extends Fragment {
 
     public final static String TAG = "OrderDetailsFragment";
 
-    public OrderMenuItemsAdapter adapter = null;
+    public OrderOrderItemsAdapter adapter = null;
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
@@ -33,26 +33,19 @@ public class OrderDetailsFragment extends Fragment {
             TextView orderId = view.findViewById(R.id.order_id);
             TextView guestId = view.findViewById(R.id.guest_id);
             TextView orderDate = view.findViewById(R.id.order_date);
-            //TextView orderTime = view.findViewById(R.id.order_time);
 
-            ListView menuItemsLV = view.findViewById(R.id.lv_menuItems);
+            ListView orderItemsLV = view.findViewById(R.id.lv_orderItems);
             MainActivity mainActivity = (MainActivity)getContext();
-            adapter = new OrderMenuItemsAdapter(getContext(), order.menuItems);
-            menuItemsLV.setAdapter(adapter);
+            adapter = new OrderOrderItemsAdapter(getContext(), order.mOrderItems);
+            orderItemsLV.setAdapter(adapter);
 
-            TextView orderExtra = view.findViewById(R.id.order_extra);
             TextView Paid = view.findViewById(R.id.order_paid);
-            TextView Method = view.findViewById(R.id.order_payment_method);
             TextView Completed = view.findViewById(R.id.order_completed);
             TextView Served = view.findViewById(R.id.order_served);
 
-
-            orderExtra.setText(order.extra);
-            Method.setText(order.payment_method);
             orderId.setText(order.id);
             guestId.setText(order.userid);
             orderDate.setText(order.datetime);
-            //orderTime.setText(currentOrder.mTime.toString());
 
             if (order.paid == false){
                 Paid.setText("No");
@@ -71,7 +64,6 @@ public class OrderDetailsFragment extends Fragment {
             } else {
                 Served.setText("Yes");
             }
-            //Method.setText(order.mMethod);
 
             Button return_currentorder = view.findViewById(R.id.current_orders_button);
             Button return_completedorder = view.findViewById(R.id.Completed_orders_button);

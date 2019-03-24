@@ -41,4 +41,15 @@ public class RequestProvider {
                 .build();
         return request;
     }
+
+    public static Request getUpdateFirebaseTokenRequest(String userId, String firebaseToken){
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(BASE_URL + "users/" + userId + "/firebase/" + firebaseToken).newBuilder();
+
+        Request request = new Request.Builder()
+                .url(urlBuilder.build())
+                .addHeader("Content-Type", "application/json")
+                .get()
+                .build();
+        return request;
+    }
 }

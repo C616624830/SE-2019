@@ -4,9 +4,9 @@ import android.util.Log;
 
 import com.Lieyang.waiter.Models.AssistanceRequest;
 import com.Lieyang.waiter.Models.AssistanceRequests;
+import com.Lieyang.waiter.Models.OrderItem;
 import com.Lieyang.waiter.Models.completedOrders;
 import com.Lieyang.waiter.Interfaces.NetworkResponseListener;
-import com.Lieyang.waiter.Models.MenuItem;
 import com.Lieyang.waiter.Models.Order;
 import com.Lieyang.waiter.Models.currentOrders;
 
@@ -58,18 +58,16 @@ public class NetworkManager{
                         try {
                             Order order = new Order();
                             order.id = jOrders.getJSONObject(i).getString("_id");
-                            order.datetime = jOrders.getJSONObject(i).getString("datetime");
-                            order.userid = jOrders.getJSONObject(i).getString("userid");
-                            JSONArray jmenuItems = jOrders.getJSONObject(i).getJSONArray("menuItems");
+                            order.datetime = jOrders.getJSONObject(i).getString("date_placed");
+                            order.userid = jOrders.getJSONObject(i).getString("userId");
+                            JSONArray jorderItems = jOrders.getJSONObject(i).getJSONArray("orderItems");
 
-                            for (int j=0; j<jmenuItems.length(); j++){
-                            String dishname = jmenuItems.getJSONObject(j).getString("dishname");
-                            String dishprice = jmenuItems.getJSONObject(j).getString("price");
-                            order.menuItems.add(new MenuItem(dishname, dishprice));}
+                            for (int j=0; j<jorderItems.length(); j++){
+                            String dishname = jorderItems.getJSONObject(j).getString("title");
+                            String details = jorderItems.getJSONObject(j).getString("details");
+                            order.mOrderItems.add(new OrderItem(dishname, details));}
 
-                            order.extra = jOrders.getJSONObject(i).getString("extra");
                             order.paid = jOrders.getJSONObject(i).getBoolean("paid");
-                            order.payment_method = jOrders.getJSONObject(i).getString("payment_method");
                             order.completed = jOrders.getJSONObject(i).getBoolean("completed");
                             order.served = jOrders.getJSONObject(i).getBoolean("served");
 
@@ -109,20 +107,18 @@ public class NetworkManager{
                         try {
                             Order order = new Order();
                             order.id = jOrders.getJSONObject(i).getString("_id");
-                            order.datetime = jOrders.getJSONObject(i).getString("datetime");
-                            order.userid = jOrders.getJSONObject(i).getString("userid");
+                            order.datetime = jOrders.getJSONObject(i).getString("date_placed");
+                            order.userid = jOrders.getJSONObject(i).getString("userId");
 
-                            JSONArray jmenuItems = jOrders.getJSONObject(i).getJSONArray("menuItems");
+                            JSONArray jorderItems = jOrders.getJSONObject(i).getJSONArray("orderItems");
 
-                            for (int j = 0; j < jmenuItems.length(); j++) {
-                                String dishname = jmenuItems.getJSONObject(j).getString("dishname");
-                                String dishprice = jmenuItems.getJSONObject(j).getString("price");
-                                order.menuItems.add(new MenuItem(dishname, dishprice));
+                            for (int j = 0; j < jorderItems.length(); j++) {
+                                String dishname = jorderItems.getJSONObject(j).getString("title");
+                                String details = jorderItems.getJSONObject(j).getString("details");
+                                order.mOrderItems.add(new OrderItem(dishname, details));
                             }
 
-                            order.extra = jOrders.getJSONObject(i).getString("extra");
                             order.paid = jOrders.getJSONObject(i).getBoolean("paid");
-                            order.payment_method = jOrders.getJSONObject(i).getString("payment_method");
                             order.completed = jOrders.getJSONObject(i).getBoolean("completed");
                             order.served = jOrders.getJSONObject(i).getBoolean("served");
 
@@ -222,6 +218,62 @@ public class NetworkManager{
 
                     for (NetworkResponseListener listener: listeners) {
                         listener.OnNetworkResponseReceived(RequestType.COMPLETE_REQUESTS, assistanceRequest);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
+    }
+
+    public void updateFirebaseToken(String userId, String firebaseToken){
+        httpClient.newCall(RequestProvider.getUpdateFirebaseTokenRequest(userId, firebaseToken))
+                .enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        Log.d(TAG, "updateFireBaseToken failed");
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        try {
+                            JSONObject statusObj = new JSONObject(response.body().string());
+                            boolean status = statusObj.getBoolean("success");
+                            if(status){
+                                Log.d(TAG, "updateFireBaseToken succeeded");
+                            }
+                            else{
+                                Log.d(TAG, "updateFireBaseToken failed");
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+    }
+
+    public void getOrderInfo(String orderId){
+        httpClient.newCall(RequestProvider.getOrderInfoRequest(orderId)).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                try {
+                    Order order = new Order();
+                    JSONObject jOrder = new JSONObject(response.body().string());
+
+                    order.id = jOrder.getString("_id");
+                    order.userid = jOrder.getString("userId");
+
+                    for (NetworkResponseListener listener: listeners) {
+                        listener.OnNetworkResponseReceived(RequestType.ORDER_INFO, order);
                     }
 
                 } catch (JSONException e) {

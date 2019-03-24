@@ -1,5 +1,6 @@
 package com.Lieyang.Chef.Fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import android.support.annotation.Nullable;
@@ -24,11 +25,19 @@ import com.Lieyang.Chef.R;
 public class CurrentOrdersFragment extends Fragment implements NetworkResponseListener {
     public static final String TAG = "CurrentOrdersFragment";
     public static final String TAG2 = "flow";
-
-    public static int i = 0;
+    private MainActivity mActivity = null;
 
     private ListView ordersListView;
     public static CurrentOrdersAdapter currentOrdersAdapter;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if(context instanceof MainActivity){
+            mActivity = (MainActivity)context;
+        }
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,10 +60,7 @@ public class CurrentOrdersFragment extends Fragment implements NetworkResponseLi
             }
         });
 
-        if (i == 0){
-            NetworkManager.getInstance().addListener(this);
-            i++;
-        }
+        NetworkManager.getInstance().addListener(this);
         NetworkManager.getInstance().getCurrentOrders();
 
         return view;
@@ -64,7 +70,7 @@ public class CurrentOrdersFragment extends Fragment implements NetworkResponseLi
     public void OnNetworkResponseReceived(RequestType REQUEST_TYPE, Object result) {
         switch (REQUEST_TYPE){
             case GET_CURRENTORDERS:
-                getActivity().runOnUiThread(new Runnable() {
+                mActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         Log.d(TAG2, "CurrentOrdersFragOnNetworkResponseReceived");
@@ -78,7 +84,7 @@ public class CurrentOrdersFragment extends Fragment implements NetworkResponseLi
                 break;
             case COMLETE_ORDER:
 
-                getActivity().runOnUiThread(new Runnable() {
+                mActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         Order completedOrder = (Order)result;

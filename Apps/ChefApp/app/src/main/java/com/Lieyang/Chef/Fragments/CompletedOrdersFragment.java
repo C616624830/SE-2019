@@ -1,5 +1,6 @@
 package com.Lieyang.Chef.Fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import android.support.v4.app.Fragment;
@@ -24,11 +25,20 @@ public class CompletedOrdersFragment extends Fragment implements NetworkResponse
     public static final String TAG = "CompletedOrdersFragment";
 
     public static final String TAG2 = "flow";
+    private MainActivity mActivity = null;
 
-    public static int i = 0;
 
     private ListView ordersListView;
     private CompletedOrdersAdapter mCompletedOrdersAdapter;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if(context instanceof MainActivity){
+            mActivity = (MainActivity)context;
+        }
+    }
 
     @Override
     public View onCreateView( LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,10 +55,7 @@ public class CompletedOrdersFragment extends Fragment implements NetworkResponse
             }
         });
 
-        if (i == 0){
-            NetworkManager.getInstance().addListener(this);
-            i++;
-        }
+        NetworkManager.getInstance().addListener(this);
         //if(mCompletedOrdersAdapter.isEmpty()) {
         NetworkManager.getInstance().getCompletedOrders();
         //}
@@ -60,7 +67,7 @@ public class CompletedOrdersFragment extends Fragment implements NetworkResponse
     public void OnNetworkResponseReceived(RequestType REQUEST_TYPE, Object result) {
         switch (REQUEST_TYPE){
             case GET_COMPLETEDORDERS:
-                getActivity().runOnUiThread(new Runnable() {
+                mActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         Log.d(TAG2, "CompletedOrdersFragOnNetworkResponseReceived");

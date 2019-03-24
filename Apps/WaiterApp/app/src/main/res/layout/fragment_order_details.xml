@@ -83,15 +83,6 @@
                 android:text="01/12/2019"
                 android:textSize="20dp" />
 
-
-            <!--<TextView-->
-            <!--android:id="@+id/order_time"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:gravity="bottom"-->
-            <!--android:text="2:37 pm"-->
-            <!--android:textSize="15dp" />-->
-
         </LinearLayout>
 
         <LinearLayout
@@ -109,7 +100,7 @@
                 android:textStyle="bold" />
 
             <ListView
-                android:id="@+id/lv_menuItems"
+                android:id="@+id/lv_orderItems"
                 android:layout_width="match_parent"
                 android:layout_height="229dp"
                 android:paddingLeft="30dp">
@@ -118,29 +109,6 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:text="Extra Information: "
-                android:textSize="20dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/order_extra"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                android:paddingLeft="20dp"
-                android:text="Allergy to latex"
-                android:textSize="20dp" />
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -161,32 +129,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="no"
                 android:textSize="20dp" />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                android:text="Method: "
-                android:textSize="20dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/order_payment_method"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="Cash"
-                android:textSize="20dp" />
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -207,7 +152,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="No"
                 android:textSize="20dp" />
         </LinearLayout>
 
@@ -230,7 +174,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="No"
                 android:textSize="20dp" />
         </LinearLayout>
 

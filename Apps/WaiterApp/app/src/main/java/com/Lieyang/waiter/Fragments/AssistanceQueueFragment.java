@@ -1,5 +1,6 @@
 package com.Lieyang.waiter.Fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -22,10 +23,20 @@ import com.Lieyang.waiter.R;
 public class AssistanceQueueFragment extends Fragment implements NetworkResponseListener {
 
     public static final String TAG = "AssistanceQueueFragment";
+    private MainActivity mActivity = null;
 
 
     private ListView assistanceRequestsListView;
     private AssistanceRequestsAdapter mAssistanceRequestsAdapter;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if(context instanceof MainActivity){
+            mActivity = (MainActivity)context;
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,7 +72,7 @@ public class AssistanceQueueFragment extends Fragment implements NetworkResponse
     public void OnNetworkResponseReceived(RequestType REQUEST_TYPE, Object result) {
         switch (REQUEST_TYPE){
             case GET_REQUESTS:
-                getActivity().runOnUiThread(new Runnable() {
+                mActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         mAssistanceRequestsAdapter.clear();
@@ -72,7 +83,7 @@ public class AssistanceQueueFragment extends Fragment implements NetworkResponse
 
                 break;
             case COMPLETE_REQUESTS:
-                getActivity().runOnUiThread(new Runnable() {
+                mActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         AssistanceRequest assistanceRequest = (AssistanceRequest)result;

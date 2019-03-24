@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity
 //
 //    public static ArrayList<User> users = new ArrayList<>();
 //
-//    public static ArrayList<MenuItem> mMenuItems = new ArrayList<>();
+//    public static ArrayList<OrderItem> mMenuItems = new ArrayList<>();
 
 
     public ArrayList<Order> orders = new ArrayList<>();
@@ -97,10 +97,10 @@ public class MainActivity extends AppCompatActivity
 //        users.add(new User("guest13"));
 //        users.add(new User("guest14"));
 //
-//        mMenuItems.add(new MenuItem("Pizza","$10.00"));
-//        mMenuItems.add(new MenuItem("Rice","$11.00"));
-//        mMenuItems.add(new MenuItem("Pizza","$10.00"));
-//        mMenuItems.add(new MenuItem("Potato","$9.00"));
+//        mMenuItems.add(new OrderItem("Pizza","$10.00"));
+//        mMenuItems.add(new OrderItem("Rice","$11.00"));
+//        mMenuItems.add(new OrderItem("Pizza","$10.00"));
+//        mMenuItems.add(new OrderItem("Potato","$9.00"));
 //
 //        Date date = new Date("09/21/2018");
 //
@@ -180,7 +180,7 @@ public class MainActivity extends AppCompatActivity
 //        return completedorders;
 //    }
 //
-//    public ArrayList<MenuItem> getMenuItems(){
+//    public ArrayList<OrderItem> getMenuItems(){
 //        return mMenuItems;
 //    }
 //
@@ -241,7 +241,7 @@ public class MainActivity extends AppCompatActivity
 //
 //    }
 
-//    public void menuReceived(ArrayList<MenuItem> items){
+//    public void menuReceived(ArrayList<OrderItem> items){
 //
 //    }
 }

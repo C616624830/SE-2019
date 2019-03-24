@@ -1,5 +1,7 @@
 package com.Lieyang.waiter.Fragments;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 
 import android.support.annotation.Nullable;
@@ -11,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 
 import com.Lieyang.waiter.Adapters.CurrentOrdersAdapter;
@@ -25,10 +28,19 @@ import com.Lieyang.waiter.R;
 public class CurrentOrdersFragment extends Fragment implements NetworkResponseListener {
     public static final String TAG = "CurrentOrdersFragment";
     public static final String TAG2 = "flow";
-
+    private MainActivity mActivity = null;
 
     private ListView ordersListView;
-    public static CurrentOrdersAdapter currentOrdersAdapter;
+    private CurrentOrdersAdapter currentOrdersAdapter;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if(context instanceof MainActivity){
+            mActivity = (MainActivity)context;
+        }
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,19 +83,19 @@ public class CurrentOrdersFragment extends Fragment implements NetworkResponseLi
     public void OnNetworkResponseReceived(RequestType REQUEST_TYPE, Object result) {
         switch (REQUEST_TYPE){
             case GET_CURRENTORDERS:
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        currentOrdersAdapter.clear();
-                        currentOrdersAdapter.addAll(((currentOrders)result).orders);
-                        currentOrdersAdapter.notifyDataSetChanged();
-                    }
-                });
+                    mActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            currentOrdersAdapter.clear();
+                            currentOrdersAdapter.addAll(((currentOrders)result).orders);
+                            currentOrdersAdapter.notifyDataSetChanged();
+                        }
+                    });
+
 
                 break;
             case COMPLETE_ORDER:
-
-                getActivity().runOnUiThread(new Runnable() {
+                mActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         Order completedOrder = (Order)result;
@@ -102,6 +114,19 @@ public class CurrentOrdersFragment extends Fragment implements NetworkResponseLi
                         }
 
 
+                    }
+                });
+
+                break;
+            case ORDER_INFO:
+                mActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Order order = (Order)result;
+
+//                        Toast.makeText(mActivity.getApplicationContext(),
+//                                "Order "+ order.id + "is ready to served to" + order.userid,
+//                                Toast.LENGTH_SHORT).show();
                     }
                 });
 

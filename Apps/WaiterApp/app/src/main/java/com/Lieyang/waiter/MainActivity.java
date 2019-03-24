@@ -87,54 +87,27 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         Log.d(TAG, "onBackPressed: ");
-        Fragment  orderFragment =  getSupportFragmentManager().findFragmentByTag(OrderDetailsFragment.TAG);
-        Fragment  currentordersFragment =  getSupportFragmentManager().findFragmentByTag(CurrentOrdersFragment.TAG);
-        Fragment  completedordersFragment = getSupportFragmentManager().findFragmentByTag(CompletedOrdersFragment.TAG);
-        Fragment  assistanceRequestFragment = getSupportFragmentManager().findFragmentByTag(AssistanceQueueFragment.TAG);
-        Fragment  menuFragment = getSupportFragmentManager().findFragmentByTag(MenuFragment.TAG);
-        Fragment  notificationsFragment = getSupportFragmentManager().findFragmentByTag(NotificationsFragment.TAG);
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         }
-        else if (orderFragment != null && orderFragment.isVisible()) {
+
+        if(getSupportFragmentManager().findFragmentByTag(OrderDetailsFragment.TAG) != null){
             FragmentManager manager = getSupportFragmentManager();
             FragmentTransaction transaction = manager.beginTransaction();
             transaction.replace(R.id.main_container, lastFragment, lastFragmentTag);
             transaction.commit();
         }
-        else if (currentordersFragment != null && currentordersFragment.isVisible()) {
+
+        else if (getSupportFragmentManager().findFragmentByTag(HomeFragment.TAG) == null){
             FragmentManager manager = getSupportFragmentManager();
             FragmentTransaction transaction = manager.beginTransaction();
             transaction.replace(R.id.main_container, mHomeFragment, HomeFragment.TAG);
             transaction.commit();
         }
-        else if (completedordersFragment != null && completedordersFragment.isVisible()) {
-            FragmentManager manager = getSupportFragmentManager();
-            FragmentTransaction transaction = manager.beginTransaction();
-            transaction.replace(R.id.main_container, mHomeFragment, HomeFragment.TAG);
-            transaction.commit();
-        }
-        else if (assistanceRequestFragment != null && assistanceRequestFragment.isVisible()) {
-            FragmentManager manager = getSupportFragmentManager();
-            FragmentTransaction transaction = manager.beginTransaction();
-            transaction.replace(R.id.main_container, mHomeFragment, HomeFragment.TAG);
-            transaction.commit();
-        }
-        else if (menuFragment != null && menuFragment.isVisible()) {
-            FragmentManager manager = getSupportFragmentManager();
-            FragmentTransaction transaction = manager.beginTransaction();
-            transaction.replace(R.id.main_container, mHomeFragment, HomeFragment.TAG);
-            transaction.commit();
-        }
-        else if (notificationsFragment != null && notificationsFragment.isVisible()) {
-            FragmentManager manager = getSupportFragmentManager();
-            FragmentTransaction transaction = manager.beginTransaction();
-            transaction.replace(R.id.main_container, mHomeFragment, HomeFragment.TAG);
-            transaction.commit();
-        }
+
         else {
             super.onBackPressed();
         }
@@ -221,9 +194,6 @@ public class MainActivity extends AppCompatActivity
         transaction.replace(R.id.main_container, mMenuFragment, MenuFragment.TAG);
         transaction.commit();
     }
-
-
-
 
     public void loadOrdertDetailsFragment(Order item){
         orderDetailsFragment.setCurrentOrder(item);
